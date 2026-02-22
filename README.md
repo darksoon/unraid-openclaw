@@ -37,6 +37,8 @@ Oder das Script nutzen:
 curl -fsSL https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/install.sh | bash
 ```
 
+![Install Script Output](install_script.png)
+
 **Schritt 2: Container erstellen**
 1. Unraid UI → Docker → **Add Container** → Template: **OpenClaw**
 2. **Gateway Token** generieren: `openssl rand -hex 24`
@@ -177,6 +179,8 @@ Or use the install script:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/install.sh | bash
 ```
+
+![Install Script Output](install_script.png)
 
 **Step 2: Create container**
 1. Unraid UI → Docker → **Add Container** → Template: **OpenClaw**
