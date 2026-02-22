@@ -44,14 +44,14 @@ curl -fsSL https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/insta
 4. **Apply**
 
 **Alternativ: Secrets via .env-Datei**
+
+Das Install-Script erstellt automatisch eine `.env`-Datei unter `/mnt/user/appdata/openclaw/config/.env`.
 ```bash
-# .env.example herunterladen
-curl -o /mnt/user/appdata/openclaw/config/.env \
-  https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/.env.example
 # Keys eintragen
 nano /mnt/user/appdata/openclaw/config/.env
 ```
 Dann im Template bei "Env File" den Pfad `/mnt/user/appdata/openclaw/config/.env` eintragen.
+Template-Variablen können leer bleiben — .env überschreibt bei Konflikten.
 
 **Schritt 3: Zugriff**
 ```
@@ -178,14 +178,14 @@ curl -fsSL https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/insta
 4. **Apply**
 
 **Alternative: Secrets via .env file**
+
+The install script automatically creates a `.env` file at `/mnt/user/appdata/openclaw/config/.env`.
 ```bash
-# Download .env.example
-curl -o /mnt/user/appdata/openclaw/config/.env \
-  https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/.env.example
 # Edit keys
 nano /mnt/user/appdata/openclaw/config/.env
 ```
 Then set "Env File" in the template to `/mnt/user/appdata/openclaw/config/.env`.
+Template variables can be left empty — .env overrides on conflicts.
 
 **Step 3: Access**
 ```

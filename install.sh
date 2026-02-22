@@ -37,13 +37,24 @@ else
     exit 1
 fi
 
-# --- Create directories ---
+# --- Create directories and download .env template ---
 echo -e "${GREEN}[2/3]${NC} Creating directories..."
 mkdir -p "${APPDATA_DIR}/config"
 mkdir -p "${APPDATA_DIR}/workspace"
 mkdir -p "${APPDATA_DIR}/projects"
 mkdir -p "${APPDATA_DIR}/homebrew"
 echo "  ✅ Created ${APPDATA_DIR}/{config,workspace,projects,homebrew}"
+
+# Download .env.example if .env doesn't exist yet
+if [ ! -f "${APPDATA_DIR}/config/.env" ]; then
+    if curl -fsSL -o "${APPDATA_DIR}/config/.env" "${REPO_URL}/.env.example"; then
+        echo "  ✅ Created ${APPDATA_DIR}/config/.env — edit to add your API keys"
+    else
+        echo -e "  ${YELLOW}⚠️  Could not download .env template (continuing anyway)${NC}"
+    fi
+else
+    echo "  ✅ .env already exists — skipping download"
+fi
 
 # --- Check for existing container ---
 echo -e "${GREEN}[3/3]${NC} Checking environment..."
@@ -87,14 +98,16 @@ echo "  ✅ Installation complete!"
 echo "============================================"
 echo ""
 echo "Next steps:"
-echo "  1. Go to Unraid Docker page and reload"
-echo "  2. Click 'Add Container'"
-echo "  3. Select template 'OpenClaw'"
-echo "  4. Generate a token: openssl rand -hex 24"
-echo "  5. Enter at least one API key"
-echo "  6. Click Apply"
+echo "  1. Edit .env file: nano ${APPDATA_DIR}/config/.env"
+echo "  2. Add your API keys to the .env file"
+echo "  3. Go to Unraid Docker page and reload"
+echo "  4. Click 'Add Container'"
+echo "  5. Select template 'OpenClaw'"
+echo "  6. Set 'Env File' to: ${APPDATA_DIR}/config/.env"
+echo "  7. Leave template variables empty (or use both)"
+echo "  8. Click Apply"
 echo ""
-echo "  Access: http://YOUR-IP:18789/?token=YOUR_TOKEN"
+echo "  Access: http://YOUR-IP:18789/?token=YOUR_TOKEN (from .env)"
 echo ""
 echo "  Docs:   https://docs.openclaw.ai"
 echo "  Issues: https://github.com/darksoon/unraid-openclaw/issues"

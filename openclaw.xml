@@ -40,7 +40,7 @@
   <!-- ================================================================== -->
   <Config Name="Config" Target="/root/.openclaw" Default="/mnt/user/appdata/openclaw/config" Mode="rw" Description="Configuration, sessions, credentials, WhatsApp auth, openclaw.json — everything persistent. Put .env file here for secrets file mode." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/openclaw/config</Config>
 
-  <Config Name="Env File (optional)" Target="/root/.openclaw/.env" Default="" Mode="ro" Description="ALTERNATIVE: Load secrets from .env file instead of template variables. Copy .env.example to this path. Leave empty to use template variables. Example: /mnt/user/appdata/openclaw/config/.env" Type="Path" Display="always" Required="false" Mask="false"/>
+  <Config Name="Env File (optional)" Target="/root/.openclaw/.env" Default="" Mode="ro" Description="ALTERNATIVE: Load secrets from .env file. install.sh creates /mnt/user/appdata/openclaw/config/.env automatically. Edit with: nano /mnt/user/appdata/openclaw/config/.env — Leave empty to use template variables only." Type="Path" Display="always" Required="false" Mask="false"/>
 
   <Config Name="Workspace" Target="/home/node/clawd" Default="/mnt/user/appdata/openclaw/workspace" Mode="rw" Description="Agent workspace — files, memory, AGENTS.md, skills, projects" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/openclaw/workspace</Config>
 
