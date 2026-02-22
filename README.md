@@ -43,6 +43,16 @@ curl -fsSL https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/insta
 3. Mindestens **einen API Key** eintragen (z.B. Anthropic, OpenRouter oder Gemini)
 4. **Apply**
 
+**Alternativ: Secrets via .env-Datei**
+```bash
+# .env.example herunterladen
+curl -o /mnt/user/appdata/openclaw/config/.env \
+  https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/.env.example
+# Keys eintragen
+nano /mnt/user/appdata/openclaw/config/.env
+```
+Dann im Template bei "Env File" den Pfad `/mnt/user/appdata/openclaw/config/.env` eintragen.
+
 **Schritt 3: Zugriff**
 ```
 http://DEINE-IP:18789/?token=DEIN_TOKEN
@@ -166,6 +176,16 @@ curl -fsSL https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/insta
 2. Generate **Gateway Token**: `openssl rand -hex 24`
 3. Enter at least **one API key** (e.g. Anthropic, OpenRouter, or Gemini)
 4. **Apply**
+
+**Alternative: Secrets via .env file**
+```bash
+# Download .env.example
+curl -o /mnt/user/appdata/openclaw/config/.env \
+  https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/.env.example
+# Edit keys
+nano /mnt/user/appdata/openclaw/config/.env
+```
+Then set "Env File" in the template to `/mnt/user/appdata/openclaw/config/.env`.
 
 **Step 3: Access**
 ```
