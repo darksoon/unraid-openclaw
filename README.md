@@ -59,9 +59,8 @@ http://DEINE-IP:18789/?token=DEIN_TOKEN
 ```
 
 **Schritt 4: Optional - Onboarding**
-```bash
-docker exec -it OpenClaw openclaw onboard
-```
+Unraid Docker → OpenClaw → **Console** → `openclaw onboard`
+
 Führt durch die erste Einrichtung (Modell-Auswahl, Skills, etc.)
 
 ### Image Tag: `:main` vs `:latest`
@@ -78,15 +77,17 @@ Führt durch die erste Einrichtung (Modell-Auswahl, Skills, etc.)
 
 ### CLI-Zugriff
 
+**Via Unraid Web UI:** Docker → OpenClaw → Console
+```
+openclaw doctor              # Health Check
+openclaw models list          # Verfügbare Modelle
+openclaw onboard              # Setup Wizard
+```
+
+**Via SSH:**
 ```bash
-docker exec -it OpenClaw openclaw doctor              # Health Check
-docker exec -it OpenClaw openclaw models list          # Verfügbare Modelle
-docker exec -it OpenClaw openclaw onboard              # Setup Wizard
-docker exec -it OpenClaw openclaw channels login       # WhatsApp QR
-docker exec -it OpenClaw openclaw channels add --channel telegram --token "TOKEN"
-docker exec -it OpenClaw openclaw config set agents.defaults.model.primary anthropic/claude-opus-4-6
-docker exec -it OpenClaw openclaw skills install humanizer
-docker exec -it OpenClaw openclaw --version
+docker exec -it OpenClaw openclaw doctor
+docker exec -it OpenClaw openclaw models list
 ```
 
 ### Kostenlose Web Search Alternativen
@@ -199,9 +200,8 @@ http://YOUR-IP:18789/?token=YOUR_TOKEN
 ```
 
 **Step 4: Optional - Onboarding**
-```bash
-docker exec -it OpenClaw openclaw onboard
-```
+Unraid Docker → OpenClaw → **Console** → `openclaw onboard`
+
 Guides through initial setup (model selection, skills, etc.)
 
 ### Image Tag: `:main` vs `:latest`
@@ -218,15 +218,17 @@ Guides through initial setup (model selection, skills, etc.)
 
 ### CLI Access
 
+**Via Unraid Web UI:** Docker → OpenClaw → Console
+```
+openclaw doctor              # Health check
+openclaw models list          # Available models
+openclaw onboard              # Setup wizard
+```
+
+**Via SSH:**
 ```bash
-docker exec -it OpenClaw openclaw doctor              # Health check
-docker exec -it OpenClaw openclaw models list          # Available models
-docker exec -it OpenClaw openclaw onboard              # Setup wizard
-docker exec -it OpenClaw openclaw channels login       # WhatsApp QR
-docker exec -it OpenClaw openclaw channels add --channel telegram --token "TOKEN"
-docker exec -it OpenClaw openclaw config set agents.defaults.model.primary anthropic/claude-opus-4-6
-docker exec -it OpenClaw openclaw skills install humanizer
-docker exec -it OpenClaw openclaw --version
+docker exec -it OpenClaw openclaw doctor
+docker exec -it OpenClaw openclaw models list
 ```
 
 ### Free Web Search Alternatives
