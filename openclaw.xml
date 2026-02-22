@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <n>OpenClaw</n>
+  <!-- ================================================================== -->
+  <!-- IMAGE TAG — Choose your update behavior:                            -->
+  <!--   :main      = Bleeding edge, updated on every push (RECOMMENDED)  -->
+  <!--   :latest    = Stable releases only (WARNING: often lags behind!)  -->
+  <!--   :2026.2.21 = Pinned version (change manually for updates)        -->
+  <!-- ================================================================== -->
+  <Repository>ghcr.io/openclaw/openclaw:main</Repository>
+  <Registry>https://github.com/openclaw/openclaw/pkgs/container/openclaw</Registry>
+  <Network>bridge</Network>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/darksoon/unraid-openclaw/issues</Support>
+  <Project>https://github.com/openclaw/openclaw</Project>
+  <Overview>OpenClaw — Your personal AI assistant running on Unraid.&#xD;&#xD;Connects Claude, GPT, Gemini, DeepSeek, Kimi, xAI/Grok, Ollama and 100+ more models with WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams and more.&#xD;&#xD;IMAGE TAG:&#xD;This template uses :main for instant updates. The :latest tag on ghcr.io often lags behind releases by days! Pin to a specific version (e.g. :2026.2.21) if you prefer stability.&#xD;&#xD;CLI ACCESS:&#xD;docker exec -it OpenClaw openclaw [command]&#xD;docker exec -it OpenClaw openclaw doctor&#xD;docker exec -it OpenClaw openclaw models list&#xD;docker exec -it OpenClaw openclaw onboard&#xD;&#xD;FEATURES: Multi-Agent Routing, Shell Commands, File Management, Browser Control, Cron Jobs, Skills, Voice Mode, Canvas, Web Search (Brave/Tavily/SearXNG).&#xD;&#xD;FREE WEB SEARCH: Run SearXNG on Unraid as a second container — unlimited, free, self-hosted metasearch aggregating Google, DDG, Brave and 70+ engines. Also supports Tavily and Serper free tiers.&#xD;&#xD;Control UI: http://YOUR-IP:18789/?token=YOUR_TOKEN&#xD;Docs: https://docs.openclaw.ai&#xD;Template: https://github.com/darksoon/unraid-openclaw</Overview>
+  <Category>Productivity: Tools: AI</Category>
+  <WebUI>http://[IP]:[PORT:18789]/</WebUI>
+  <Icon>https://raw.githubusercontent.com/darksoon/unraid-openclaw/main/openclaw-icon.jpg</Icon>
+  <!-- user root: required for Homebrew/Skills installation -->
+  <!-- shm-size 2g: CRITICAL for Chromium/Browser tool — without it the browser crashes silently! -->
+  <ExtraParams>--user root --hostname OpenClaw --shm-size=2g</ExtraParams>
+  <!-- Entrypoint: create default config if missing, check/install Homebrew, start Gateway -->
+  <PostArgs>sh -c "mkdir -p /root/.openclaw /home/linuxbrew; [ -f /root/.openclaw/openclaw.json ] || echo '{\"gateway\":{\"mode\":\"local\",\"bind\":\"lan\",\"controlUi\":{\"allowInsecureAuth\":true},\"auth\":{\"mode\":\"token\"}}}' > /root/.openclaw/openclaw.json; if [ -d /home/linuxbrew/.linuxbrew ] &amp;&amp; [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then echo '[OpenClaw] Homebrew found.'; elif [ \"${OPENCLAW_SKIP_HOMEBREW:-0}\" = '1' ]; then echo '[OpenClaw] Homebrew skipped (OPENCLAW_SKIP_HOMEBREW=1).'; else echo '[OpenClaw] Installing Homebrew (~60s on first run)...' &amp;&amp; NONINTERACTIVE=1 curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash 2>&amp;1 || echo '[OpenClaw] WARNING: Homebrew install failed, continuing without it.'; fi; echo '[OpenClaw] Starting Gateway...'; exec node dist/index.js gateway --bind lan"</PostArgs>
+  <DonateText>Support OpenClaw Development</DonateText>
+  <DonateLink>https://github.com/sponsors/openclaw</DonateLink>
+  <Description>OpenClaw — Personal AI assistant connecting LLMs to messaging platforms. Multi-Agent, Shell, Browser, Skills, Cron, Voice. Uses :main tag for instant updates (the :latest tag lags behind!). CLI: docker exec -it OpenClaw openclaw [cmd]</Description>
+
+  <!-- Watchtower auto-update label (only relevant if Watchtower is installed) -->
+  <Label Name="com.centurylinklabs.watchtower.enable" Value="true" Description="Enable Watchtower auto-updates for this container"/>
+
+  <!-- ================================================================== -->
+  <!-- PORT                                                                -->
+  <!-- ================================================================== -->
+  <Config Name="Control UI Port" Target="18789" Default="18789" Mode="tcp" Description="Web UI and Gateway API port. Access: http://IP:18789/?token=YOUR_TOKEN" Type="Port" Display="always" Required="true" Mask="false">18789</Config>
+
+  <!-- ================================================================== -->
+  <!-- VOLUMES                                                             -->
+  <!-- ================================================================== -->
+  <Config Name="Config" Target="/root/.openclaw" Default="/mnt/user/appdata/openclaw/config" Mode="rw" Description="Configuration, sessions, credentials, WhatsApp auth, openclaw.json — everything persistent" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/openclaw/config</Config>
+
+  <Config Name="Workspace" Target="/home/node/clawd" Default="/mnt/user/appdata/openclaw/workspace" Mode="rw" Description="Agent workspace — files, memory, AGENTS.md, skills, projects" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/openclaw/workspace</Config>
+
+  <Config Name="Projects" Target="/projects" Default="/mnt/user/appdata/openclaw/projects" Mode="rw" Description="Additional path for coding projects" Type="Path" Display="advanced" Required="false" Mask="false">/mnt/user/appdata/openclaw/projects</Config>
+
+  <Config Name="Homebrew" Target="/home/linuxbrew/.linuxbrew" Default="/mnt/user/appdata/openclaw/homebrew" Mode="rw" Description="Persistent Homebrew storage for skills (go, npm, python etc). First start installs Homebrew (~60 sec)." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/openclaw/homebrew</Config>
+
+  <Config Name="Docker Socket" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="rw" Description="Docker socket for Sandbox mode — runs agent sessions in isolated containers. Enable in openclaw.json: agents.defaults.sandbox.mode = non-main" Type="Path" Display="advanced" Required="false" Mask="false">/var/run/docker.sock</Config>
+
+  <!-- ================================================================== -->
+  <!-- AUTHENTICATION                                                      -->
+  <!-- ================================================================== -->
+  <Config Name="Gateway Token" Target="OPENCLAW_GATEWAY_TOKEN" Default="" Mode="" Description="Secret token for API/UI access. Generate: openssl rand -hex 24" Type="Variable" Display="always" Required="true" Mask="true"/>
+
+  <!-- ================================================================== -->
+  <!-- LLM PROVIDERS — Built-in (set at least one!)                       -->
+  <!-- All keys set here are auto-detected by OpenClaw.                   -->
+  <!-- Custom providers (DeepSeek, MiniMax etc) need additional           -->
+  <!-- models.providers config in openclaw.json — see README.             -->
+  <!-- ================================================================== -->
+  <Config Name="Anthropic API Key" Target="ANTHROPIC_API_KEY" Default="" Mode="" Description="Claude models (recommended). console.anthropic.com — pay-as-you-go from $5" Type="Variable" Display="always" Required="false" Mask="true"/>
+
+  <Config Name="Claude OAuth Token" Target="CLAUDE_CODE_OAUTH_TOKEN" Default="" Mode="" Description="Use Claude Pro/Max subscription instead of API credits. Generate on PC: claude setup-token (starts with sk-ant-oat01-...). Token expires — regenerate on auth errors!" Type="Variable" Display="always" Required="false" Mask="true"/>
+
+  <Config Name="OpenAI API Key" Target="OPENAI_API_KEY" Default="" Mode="" Description="GPT-5/o3/Codex models. platform.openai.com" Type="Variable" Display="always" Required="false" Mask="true"/>
+
+  <Config Name="OpenRouter API Key" Target="OPENROUTER_API_KEY" Default="" Mode="" Description="200+ models via one API including free ones! openrouter.ai — Tip: use openrouter/auto for automatic model selection" Type="Variable" Display="always" Required="false" Mask="true"/>
+
+  <Config Name="Gemini API Key" Target="GEMINI_API_KEY" Default="" Mode="" Description="Google Gemini models. aistudio.google.com — generous free tier!" Type="Variable" Display="always" Required="false" Mask="true"/>
+
+  <Config Name="xAI (Grok) API Key" Target="XAI_API_KEY" Default="" Mode="" Description="Grok models by xAI. console.x.ai" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Groq API Key" Target="GROQ_API_KEY" Default="" Mode="" Description="Fast Llama/Mixtral inference. console.groq.com — generous free tier!" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Cerebras API Key" Target="CEREBRAS_API_KEY" Default="" Mode="" Description="Cerebras inference (30 req/min free!). cloud.cerebras.ai" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Mistral API Key" Target="MISTRAL_API_KEY" Default="" Mode="" Description="Mistral models. console.mistral.ai" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Kimi Coding API Key" Target="KIMI_API_KEY" Default="" Mode="" Description="Kimi Coding (Anthropic-compatible). Moonshot AI" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Moonshot API Key" Target="MOONSHOT_API_KEY" Default="" Mode="" Description="Moonshot/Kimi K2.5 (OpenAI-compatible). platform.moonshot.cn — 500K tokens/day free! Needs models.providers config." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="DeepSeek API Key" Target="DEEPSEEK_API_KEY" Default="" Mode="" Description="DeepSeek V3/Reasoner. platform.deepseek.com — extremely cheap! Needs models.providers config in openclaw.json" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="HuggingFace Token" Target="HUGGINGFACE_HUB_TOKEN" Default="" Mode="" Description="HuggingFace Inference API. huggingface.co/settings/tokens — model: huggingface/deepseek-ai/DeepSeek-R1" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="GitHub Copilot Token" Target="COPILOT_GITHUB_TOKEN" Default="" Mode="" Description="GitHub Copilot OAuth. Run on another machine first: openclaw models auth login-github-copilot" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Ollama Base URL" Target="OLLAMA_BASE_URL" Default="" Mode="" Description="Ollama for local models (free!). e.g. http://192.168.1.100:11434 — then set model to ollama/llama3.1" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
+  <!-- ================================================================== -->
+  <!-- MESSAGING CHANNELS (also configurable via Control UI)              -->
+  <!-- ================================================================== -->
+  <Config Name="Discord Bot Token" Target="DISCORD_BOT_TOKEN" Default="" Mode="" Description="Discord bot token. Also configurable via Control UI." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Telegram Bot Token" Target="TELEGRAM_BOT_TOKEN" Default="" Mode="" Description="Telegram bot token from @BotFather." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Slack Bot Token" Target="SLACK_BOT_TOKEN" Default="" Mode="" Description="Slack Bot Token (xoxb-...)." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Slack App Token" Target="SLACK_APP_TOKEN" Default="" Mode="" Description="Slack App-Level Token (xapp-...) for Socket Mode." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <!-- ================================================================== -->
+  <!-- WEB SEARCH                                                          -->
+  <!-- Brave killed their free tier! Alternatives:                         -->
+  <!--   SearXNG = completely free (self-hosted on Unraid)                 -->
+  <!--   Serper  = 2,500 queries/month free                                -->
+  <!--   Tavily  = free tier with AI-optimized results                     -->
+  <!-- ================================================================== -->
+  <Config Name="Brave Search API Key" Target="BRAVE_API_KEY" Default="" Mode="" Description="Brave Search (default provider). WARNING: Free tier discontinued! See SearXNG/Tavily/Serper for free alternatives." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Tavily API Key" Target="TAVILY_API_KEY" Default="" Mode="" Description="Tavily — AI-optimized search with free tier! app.tavily.com. Best Brave replacement. Use web-search-plus skill or Tavily MCP plugin." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="Serper API Key" Target="SERPER_API_KEY" Default="" Mode="" Description="Serper.dev — Google Search Results API. 2,500 queries/month FREE! serper.dev" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <Config Name="SearXNG URL" Target="SEARXNG_URL" Default="" Mode="" Description="SearXNG metasearch — COMPLETELY FREE and UNLIMITED! Self-host on Unraid: docker run -d --name searxng -p 8888:8080 searxng/searxng:latest — then enter http://YOUR-IP:8888 here. Use local-websearch or web-search-plus skill." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
+  <!-- ================================================================== -->
+  <!-- TOOLS and VOICE                                                     -->
+  <!-- ================================================================== -->
+  <Config Name="ElevenLabs API Key" Target="ELEVENLABS_API_KEY" Default="" Mode="" Description="ElevenLabs text-to-speech for Voice/Talk Mode. elevenlabs.io" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <!-- ================================================================== -->
+  <!-- SYSTEM                                                              -->
+  <!-- ================================================================== -->
+  <Config Name="Timezone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Container timezone for cron jobs and logs. Europe/Berlin, America/New_York, Asia/Tokyo etc." Type="Variable" Display="always" Required="false" Mask="false">Europe/Berlin</Config>
+
+  <Config Name="Gateway Port (internal)" Target="OPENCLAW_GATEWAY_PORT" Default="18789" Mode="" Description="Internal gateway port (must match external port)." Type="Variable" Display="advanced" Required="false" Mask="false">18789</Config>
+
+  <Config Name="Skip Homebrew" Target="OPENCLAW_SKIP_HOMEBREW" Default="0" Mode="" Description="Set to 1 to skip Homebrew installation (faster start, but skills requiring brew/go/npm won't work)." Type="Variable" Display="advanced" Required="false" Mask="false">0</Config>
+
+  <Config Name="Log Level" Target="OPENCLAW_LOG_LEVEL" Default="" Mode="" Description="debug, info, warn, error. Empty = default (info). Set to debug for troubleshooting." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
+  <Config Name="PATH" Target="PATH" Default="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/root/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" Mode="" Description="System PATH including Homebrew. DO NOT CHANGE!" Type="Variable" Display="advanced" Required="false" Mask="false">/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/root/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</Config>
+</Container>
