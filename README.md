@@ -58,6 +58,12 @@ Template-Variablen können leer bleiben — .env überschreibt bei Konflikten.
 http://DEINE-IP:18789/?token=DEIN_TOKEN
 ```
 
+**Schritt 4: Optional - Onboarding**
+```bash
+docker exec -it OpenClaw openclaw onboard
+```
+Führt durch die erste Einrichtung (Modell-Auswahl, Skills, etc.)
+
 ### Image Tag: `:main` vs `:latest`
 
 | Tag | Verhalten | Empfehlung |
@@ -191,6 +197,12 @@ Template variables can be left empty — .env overrides on conflicts.
 ```
 http://YOUR-IP:18789/?token=YOUR_TOKEN
 ```
+
+**Step 4: Optional - Onboarding**
+```bash
+docker exec -it OpenClaw openclaw onboard
+```
+Guides through initial setup (model selection, skills, etc.)
 
 ### Image Tag: `:main` vs `:latest`
 
