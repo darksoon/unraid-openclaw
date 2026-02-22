@@ -63,7 +63,7 @@
   <!-- ================================================================== -->
   <Config Name="Anthropic API Key" Target="ANTHROPIC_API_KEY" Default="" Mode="" Description="Claude models (recommended). console.anthropic.com — pay-as-you-go from $5" Type="Variable" Display="always" Required="false" Mask="true"/>
 
-  <Config Name="Claude OAuth Token" Target="CLAUDE_CODE_OAUTH_TOKEN" Default="" Mode="" Description="Use Claude Pro/Max subscription instead of API credits. Generate on PC: claude setup-token (starts with sk-ant-oat01-...). Token expires — regenerate on auth errors!" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Claude OAuth Token" Target="CLAUDE_CODE_OAUTH_TOKEN" Default="" Mode="" Description="⚠️ DEPRECATED - DO NOT USE! Anthropic banned OAuth tokens from Pro/Max in third-party tools (Feb 2026). Use ANTHROPIC_API_KEY instead. Account ban risk!" Type="Variable" Display="advanced" Required="false" Mask="true"/>
 
   <Config Name="OpenAI API Key" Target="OPENAI_API_KEY" Default="" Mode="" Description="GPT-5/o3/Codex models. platform.openai.com" Type="Variable" Display="always" Required="false" Mask="true"/>
 

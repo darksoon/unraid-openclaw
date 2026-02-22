@@ -8,6 +8,21 @@
 
 Verbessertes Unraid-Template für [OpenClaw](https://github.com/openclaw/openclaw) mit sofortigen Updates, 15+ LLM-Providern, kostenlosen Web-Search-Alternativen und vollem Feature-Zugriff.
 
+### ⚠️ WICHTIG: Claude OAuth vs. API Key
+
+**Anthropic hat die Nutzung von Claude Pro/Max Abonnements in Drittanbieter-Tools verboten!**
+
+| Methode | Status | Empfehlung |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | ✅ Erlaubt | **Verwenden!** Pay-as-you-go ab $5 Guthaben |
+| `CLAUDE_CODE_OAUTH_TOKEN` | ❌ Verboten | **Nicht verwenden!** Account-Ban Risiko |
+
+Seit Februar 2026 verbietet Anthropic explizit die Nutzung von OAuth-Tokens aus Claude Free/Pro/Max Accounts in Tools wie OpenClaw. Bei Verstößen droht Account-Sperrung ohne Warnung.
+
+**Quellen:** [Anthropic Terms Update](https://www.theregister.com/2026/02/20/anthropic_clarifies_ban_third_party_claude_access/) | [OpenClaw.report](https://openclaw.report/ecosystem/anthropic-bans-oauth-tokens-third-party-tools)
+
+---
+
 ### Warum dieses Template?
 
 Das [Original-Template](https://github.com/jdhill777/openclaw-unraid) ist ein guter Startpunkt, hat aber Einschränkungen:
@@ -150,6 +165,21 @@ docker exec -it OpenClaw openclaw --version
 ## 🇬🇧 English
 
 Improved Unraid template for [OpenClaw](https://github.com/openclaw/openclaw) with instant updates, 15+ LLM providers, free web search alternatives, and full feature access.
+
+### ⚠️ IMPORTANT: Claude OAuth vs. API Key
+
+**Anthropic has banned using Claude Pro/Max subscriptions in third-party tools!**
+
+| Method | Status | Recommendation |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | ✅ Allowed | **Use this!** Pay-as-you-go from $5 credit |
+| `CLAUDE_CODE_OAUTH_TOKEN` | ❌ Banned | **Don't use!** Account ban risk |
+
+Since February 2026, Anthropic explicitly prohibits using OAuth tokens from Claude Free/Pro/Max accounts in tools like OpenClaw. Violations may result in account suspension without warning.
+
+**Sources:** [Anthropic Terms Update](https://www.theregister.com/2026/02/20/anthropic_clarifies_ban_third_party_claude_access/) | [OpenClaw.report](https://openclaw.report/ecosystem/anthropic-bans-oauth-tokens-third-party-tools)
+
+---
 
 ### Why this template?
 
